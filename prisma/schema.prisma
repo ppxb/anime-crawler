@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Anime {
+  id          String      @id @default(uuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  name        String
+  alias       String?
+  location    String?     @db.VarChar(12)
+  publishedAt Int?
+  AnimeFile   AnimeFile[]
+}
+
+model AnimeFile {
+  id      Int     @id @default(autoincrement())
+  name    String
+  title   String
+  url     String
+  Anime   Anime?  @relation(fields: [animeId], references: [id])
+  animeId String?
+}
